@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<music>
+    <song id="1">
+        <songTitle>Bohemian Rhapsody</songTitle>
+        <artist>Queen</artist>
+        <albums>
+            <album>A Night at the Opera</album>
+            <album>Greatest Hits</album>
+            <album>Live at Wembley</album>
+        </albums>
+        <debutYear>1975</debutYear>
+    </song>
+    <song id="2">
+        <songTitle>Hotel California</songTitle>
+        <artist>Eagles</artist>
+        <albums>
+            <album>Hotel California</album>
+            <album>Their Greatest Hits</album>
+            <album>Live</album>
+        </albums>
+        <debutYear>1976</debutYear>
+    </song>
+    <song id="3">
+        <songTitle>Smells Like Teen Spirit</songTitle>
+        <artist>Nirvana</artist>
+        <albums>
+            <album>Nevermind</album>
+            <album>MTV Unplugged in New York</album>
+            <album>Nirvana</album>
+        </albums>
+        <debutYear>1991</debutYear>
+    </song>
+    <song id="4">
+        <songTitle>Rolling in the Deep</songTitle>
+        <artist>Adele</artist>
+        <albums>
+            <album>21</album>
+            <album>25</album>
+            <album>Live at the Royal Albert Hall</album>
+        </albums>
+        <debutYear>2010</debutYear>
+    </song>
+    <song id="5">
+        <songTitle>Shape of You</songTitle>
+        <artist>Ed Sheeran</artist>
+        <albums>
+            <album>÷ (Divide)</album>
+            <album>No.6 Collaborations Project</album>
+            <album>Live at the BBC</album>
+        </albums>
+        <debutYear>2017</debutYear>
+    </song>
+</music>

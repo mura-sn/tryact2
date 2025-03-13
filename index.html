@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Music Library</title>
+        <style>
+            /* General Styles */
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                color: #34495e;
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+
+            /* Music Library Styles */
+            #music-list {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                margin: 10px 0;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #fafafa;
+            }
+
+            .songTitle {
+                font-weight: bold;
+                color: #2980b9;
+            }
+
+            .artist {
+                color: #27ae60;
+            }
+
+            .albums {
+                color: #8e44ad;
+            }
+
+            /* Query Section Styles */
+            #query-section {
+                margin-top: 30px;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            #query-input {
+                width: calc(100% - 120px);
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            button {
+                padding: 10px 20px;
+                background-color: #2980b9;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-left: 10px;
+            }
+
+            button:hover {
+                background-color: #000000;
+            }
+
+            #query-results {
+                margin-top: 20px;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #fafafa;
+                color: #000000;
+            }
+        </style>
+    </head>
+    <body>
+        <h1></h1>
+        <div id="music-list"></div>
+
+        <div id="query-section">
+            <h2>XPath Query</h2>
+            <div>
+                <label for="query-input">Enter XPath Query:</label>
+                <input type="text" id="query-input" placeholder="/music/song/songTitle" />
+                <button onclick="executeXPathQuery()">Run Query</button>
+            </div>
+            <div id="query-results">
+                Results will appear here...
+            </div>
+        </div>
+
+        <script>
+            // Load XML and XSLT files and transform the XML into HTML
+            function loadMusicLibrary() {
+                const xml = new XMLHttpRequest();
+                const xsl = new XMLHttpRequest();
+
+                xml.open("GET", "music.xml", false);
+                xsl.open("GET", "music.xsl", false);
+                xml.send(null);
+                xsl.send(null);
+
+                const xsltProcessor = new XSLTProcessor();
+                xsltProcessor.importStylesheet(xsl.responseXML);
+                const resultDocument = xsltProcessor.transformToFragment(xml.responseXML, document);
+
+                document.getElementById("music-list").appendChild(resultDocument);
+            }
+
+            // Load the XML file for XPath querying
+            let xmlDoc;
+
+            function loadXML() {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "music.xml", false);
+                xhr.send(null);
+                xmlDoc = new DOMParser().parseFromString(xhr.responseText, "text/xml");
+            }
+
+            // Execute the XPath query and display results
+            function executeXPathQuery() {
+                const query = document.getElementById("query-input").value;
+                const resultsDiv = document.getElementById("query-results");
+
+                if (!xmlDoc) {
+                    loadXML();
+                }
+
+                try {
+                    const result = xmlDoc.evaluate(
+                        query,
+                        xmlDoc,
+                        null,
+                        XPathResult.ANY_TYPE,
+                        null
+                    );
+
+                    let output = "";
+                    let node = result.iterateNext();
+
+                    while (node) {
+                        output += `<div>${node.nodeValue || node.textContent}</div>`;
+                        node = result.iterateNext();
+                    }
+
+                    if (!output) {
+                        output = "No results found.";
+                    }
+
+                    resultsDiv.innerHTML = output;
+                } catch (error) {
+                    resultsDiv.innerHTML = `Error: ${error.message}`;
+                }
+            }
+
+            // Load the music library and XML when the page loads
+            window.onload = function () {
+                loadMusicLibrary();
+                loadXML();
+            };
+        </script>
+    </body>
+</html>
